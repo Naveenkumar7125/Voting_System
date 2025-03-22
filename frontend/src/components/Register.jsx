@@ -1,62 +1,59 @@
-import React, { useState } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import React, { useState } from 'react';
+import axios from 'axios';
 
-function Register() {
-    const [showPassword, setShowPassword] = useState(false);
+const Register = () => {
+    const [formData, setFormData] = useState({ username: '', email: '', password: '' });
 
-    const togglePassword = () => {
-        setShowPassword(!showPassword);
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('http://localhost:5000/api/auth/register', formData);
+            alert(response.data.message);
+        } catch (error) {
+            console.error('Error:', error.response ? error.response.data : error.message);
+            alert('Registration failed! Please check your input or try again.');
+        }
+    };
+    
+
     return (
-        <div className="flex flex-col items-center">
-            <img
-                src="https://cdn-icons-png.flaticon.com/512/847/847969.png"
-                alt="Registration Logo"
-                className="w-24 mb-4"
-            />
-            <h2 className="text-2xl font-semibold text-blue-900 mb-6">Register</h2>
-            <form className="w-full">
-                <div className="mb-4">
-                    <label className="block text-blue-800 font-medium mb-2">Full Name</label>
-                    <input
-                        type="text"
-                        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Enter your name"
-                    />
-                </div>
-                <div className="mb-4">
-                    <label className="block text-blue-800 font-medium mb-2">Email</label>
-                    <input
-                        type="email"
-                        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Enter your email"
-                    />
-                </div>
-                <div className="mb-6 relative">
-                    <label className="block text-blue-800 font-medium mb-2">Password</label>
-                    <input
-                        type={showPassword ? "text" : "password"}
-                        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Create a password"
-                    />
-                    <span
-                        className="absolute right-3 top-9 text-gray-600 cursor-pointer"
-                        onClick={togglePassword}
-                    >
-                        {showPassword ? <FaEyeSlash /> : <FaEye />}
-                    </span>
-                </div>
-                <button className="w-full py-2 bg-blue-800 text-white font-semibold rounded-md hover:bg-blue-700 transition duration-300">
+        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+            <form className="bg-white p-8 shadow-md rounded" onSubmit={handleSubmit}>
+                <h2 className="text-2xl mb-4">Register</h2>
+                <input
+                    type="text"
+                    name="username"
+                    placeholder="Username"
+                    className="block w-full mb-3 p-2 border"
+                    onChange={handleChange}
+                    required
+                />
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    className="block w-full mb-3 p-2 border"
+                    onChange={handleChange}
+                    required
+                />
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    className="block w-full mb-3 p-2 border"
+                    onChange={handleChange}
+                    required
+                />
+                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
                     Register
                 </button>
             </form>
-            <p className="mt-4 text-blue-700">
-                Already have an account?{" "}
-                <a href="/" className="text-blue-500 underline">Login</a>
-            </p>
         </div>
     );
-}
+};
 
 export default Register;
