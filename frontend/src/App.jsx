@@ -4,6 +4,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
 import Profile from "./components/Profile";
+import VoterVerification from "./components/VoterVerification";  // Import the new component
 import ProtectedRoute from "./components/ProtectedRoutes";
 
 function App() {
@@ -28,6 +29,14 @@ function App() {
                     element={
                         <ProtectedRoute>
                             <Profile />
+                        </ProtectedRoute>
+                    } 
+                />
+                <Route 
+                    path="/verify-voters" 
+                    element={
+                        <ProtectedRoute>
+                            <VoterVerification />
                         </ProtectedRoute>
                     } 
                 />
